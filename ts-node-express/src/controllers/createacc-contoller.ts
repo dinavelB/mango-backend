@@ -1,6 +1,7 @@
 import UserService from "../services/create-account.js";
 import { NextFunction, Request, Response } from "express";
 
+//import service to save data
 const userService = new UserService(); //instantiate class to use methods
 
 //arrow function
