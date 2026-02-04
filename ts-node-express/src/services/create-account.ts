@@ -9,7 +9,7 @@ import { Repository } from "typeorm";
 //often async
 
 class UserService {
-  private userRepository: Repository<User>; //points to
+  private userRepository: Repository<User>; //user as a blueprint
 
   constructor() {
     this.userRepository = AppDataSource.getRepository(User);
