@@ -15,7 +15,7 @@ export const createAccount = async (
   try {
     const userData = req.body;
 
-    const user = await userService.createUser(userData);
+    const user = await userService.createUser(userData); //throw new error resides here
     console.log("user created successfully");
 
     //data filtered by service isnt returning to frontend
@@ -24,9 +24,11 @@ export const createAccount = async (
       //data: user
     });
   } catch (err: any) {
-    console.log("error:", err.message);
+    console.log("error:", err.message); //pertains to throw new error
+
     res.status(401).json({
       message: "user not successfully saved",
+      error: err.message,
     });
   }
 };

@@ -17,28 +17,27 @@ class UserService {
   }
 
   async createUser(userData: UserInfo): Promise<Partial<User>> {
-    try {
-      if (userData.password != userData.confirmpassword) {
-        throw new Error("passwords doesnt match");
-      }
-
-      const user = this.userRepository.create({
-        email: userData.email,
-        password: userData.password,
-      });
-
-      const saved = await this.userRepository.save(user); //typeorm is async
-      console.log("user saved at databsse");
-
-      //filter an object
-      //dont return password
-      const { password, ...filteredData } = saved;
-
-      return filteredData;
-    } catch (error: any) {
-      //re catch here
-      throw new Error(`Failed to create user: ${error.message}`);
+    if (userData.password != userData.confirmpassword) {
+      throw new Error("passwords doesnt match");
     }
+
+    const user = this.userRepository.create({
+      email: userData.email,
+      password: userData.password,
+    });
+
+    const saved = await this.userRepository.save(user); //typeorm is async
+    console.log("user saved at databsse");
+
+    //filter an object
+    //dont return password
+    const { password, ...filteredData } = saved;
+
+    return filteredData;
+  }
+  catch(error: any) {
+    //re catch here
+    throw new Error(`Failed to create user: ${error.message}`);
   }
 }
 
