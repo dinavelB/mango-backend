@@ -17,8 +17,11 @@ export const createAccount = async (
 
     const user = await userService.createUser(userData);
     console.log("user created successfully");
+
+    //data filtered by service isnt returning to frontend
     res.status(201).json({
       message: "user successfully saved",
+      //data: user
     });
   } catch (err: any) {
     res.status(401).json({

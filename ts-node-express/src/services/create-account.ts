@@ -16,15 +16,27 @@ class UserService {
     this.userRepository = AppDataSource.getRepository(User);
   }
 
-  async createUser(userData: UserInfo): Promise<User> {
+  async createUser(userData: UserInfo): Promise<Partial<User>> {
     try {
-      const user = this.userRepository.create(userData);
+      if (userData.password != userData.confirmpassword) {
+        throw new Error("passwords doesnt match");
+      }
 
+      const user = this.userRepository.create({
+        email: userData.email,
+        password: userData.password,
+      });
+
+      const saved = await this.userRepository.save(user); //typeorm is async
       console.log("user saved at databsse");
-      return await this.userRepository.save(user); //the beforeinsert happens here
-    } catch (error: any) {
-      console.log("error saving user", error);
 
+      //filter an object
+      //dont return password and confirmpassword
+      const { password, ...filteredData } = saved;
+
+      return filteredData;
+    } catch (error: any) {
+      //re catch here
       throw new Error(`Failed to create user: ${error.message}`);
     }
   }
