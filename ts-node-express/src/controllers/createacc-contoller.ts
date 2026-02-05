@@ -20,6 +20,7 @@ export const createAccount = async (
     res.status(201).json({
       message: "user successfully saved",
     });
+    console.log("testtsss");
   } catch (err: any) {
     res.status(401).json({
       message: "user not successfully saved",
