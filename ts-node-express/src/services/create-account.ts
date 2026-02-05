@@ -1,6 +1,6 @@
 import { error } from "node:console";
 import { AppDataSource } from "../config/config.js";
-import db from "../config/database.js";
+import db from "../config/test-conf.js";
 import { User } from "../entities/user-entity.js";
 import { Repository } from "typeorm";
 

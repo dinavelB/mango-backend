@@ -11,7 +11,8 @@ dotenv.config(); //load all env variables
 const app = express();
 
 app.use(express.json());
-app.use(corsConf);
+
+app.use(corsConf); //use cors
 
 //apis
 app.use("/api/users", userroute);
