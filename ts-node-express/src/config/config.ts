@@ -1,6 +1,11 @@
 import "reflect-metadata";
 import { DataSource } from "typeorm";
+import { User } from "../entities/user-entity.js";
+import { fileURLToPath } from "url";
+import path from "path";
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 import * as dotenv from "dotenv";
 
 dotenv.config();
@@ -16,9 +21,8 @@ export const AppDataSource = new DataSource({
   password: DB_PASSWORD,
   database: DB_DATABASE,
   synchronize: NODE_ENV === "dev" ? true : false,
-  //logging logs sql command on the treminal
   logging: NODE_ENV === "dev" ? false : false,
-  //entities: [User],
-  //migrations: [__dirname + "/migration/*.ts"],
-  //subscribers: [],
+  entities: [User],
+  migrations: [__dirname + "/migration/*.ts"],
+  subscribers: [],
 });
