@@ -31,7 +31,7 @@ class UserService {
       console.log("user saved at databsse");
 
       //filter an object
-      //dont return password and confirmpassword
+      //dont return password
       const { password, ...filteredData } = saved;
 
       return filteredData;

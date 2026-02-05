@@ -24,6 +24,7 @@ export const createAccount = async (
       //data: user
     });
   } catch (err: any) {
+    console.log("error:", err.message);
     res.status(401).json({
       message: "user not successfully saved",
     });
