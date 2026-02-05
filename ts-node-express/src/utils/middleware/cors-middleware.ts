@@ -6,6 +6,7 @@ const corsConfig = {
   methods: ["GET", "POST", "DELETE", "UPDATE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization", "Accept"],
   exposedHeaders: ["set-cookie"],
+
   optionsSuccessStatus: 200,
 };
 

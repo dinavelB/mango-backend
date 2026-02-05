@@ -16,11 +16,10 @@ export const createAccount = async (
     const userData = req.body;
 
     const user = await userService.createUser(userData);
-
+    console.log("user created successfully");
     res.status(201).json({
       message: "user successfully saved",
     });
-    console.log("testtsss");
   } catch (err: any) {
     res.status(401).json({
       message: "user not successfully saved",

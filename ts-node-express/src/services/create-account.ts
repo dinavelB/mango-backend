@@ -3,6 +3,7 @@ import { AppDataSource } from "../config/config.js";
 import db from "../config/test-conf.js";
 import { User } from "../entities/user-entity.js";
 import { Repository } from "typeorm";
+import { UserInfo } from "../types/user-types.js";
 
 //services is the main logic
 //performs querying, business logic and etc.
@@ -15,13 +16,12 @@ class UserService {
     this.userRepository = AppDataSource.getRepository(User);
   }
 
-  async createUser(userData: {
-    email: string;
-    password: string;
-  }): Promise<User> {
+  async createUser(userData: UserInfo): Promise<User> {
     try {
       const user = this.userRepository.create(userData);
-      return await this.userRepository.save(user);
+
+      console.log("user saved at databsse");
+      return await this.userRepository.save(user); //the beforeinsert happens here
     } catch (error: any) {
       console.log("error saving user", error);
 
