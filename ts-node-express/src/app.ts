@@ -4,11 +4,14 @@ import { Request, Response } from "express";
 import { AppDataSource } from "./config/config.js";
 import dotenv from "dotenv";
 import userroute from "./routes/userroute.js";
+import { corsConf } from "./utils/middleware/cors-middleware.js";
+
 dotenv.config(); //load all env variables
 
 const app = express();
 
 app.use(express.json());
+app.use(corsConf);
 
 //apis
 app.use("/api/users", userroute);
