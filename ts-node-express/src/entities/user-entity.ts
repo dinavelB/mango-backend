@@ -4,15 +4,14 @@ import {
   Column,
   CreateDateColumn,
   UpdateDateColumn,
+  BeforeInsert,
 } from "typeorm";
+import { hashPass, comparePass } from "../utils/securities/password-hashing.js";
 
 @Entity({ name: "Users" })
 export class User {
   @PrimaryGeneratedColumn("uuid")
   id: string;
-
-  @Column({ nullable: false })
-  name: string;
 
   @Column({ nullable: false })
   email: string;
@@ -28,4 +27,15 @@ export class User {
 
   @UpdateDateColumn()
   updatedAt: Date;
+
+  @BeforeInsert() //before inserting
+  async hashPass() {
+    if (this.password) {
+      this.password = await hashPass(this.password);
+    }
+  }
+
+  async compare(plainpass: string) {
+    return await comparePass(plainpass, this.password);
+  }
 }
