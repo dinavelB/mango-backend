@@ -21,6 +21,7 @@ class UserService {
       throw new Error("passwords doesnt match");
     }
 
+    //save whats only needed.
     const user = this.userRepository.create({
       email: userData.email,
       password: userData.password,

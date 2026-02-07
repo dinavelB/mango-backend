@@ -6,7 +6,7 @@ export async function hashPass(password: string): Promise<string> {
   const salt: number = 10;
   const userPassword = password;
 
-  return await bcrypt.hash(password, salt);
+  return await bcrypt.hash(userPassword, salt);
 }
 
 export async function comparePass(
