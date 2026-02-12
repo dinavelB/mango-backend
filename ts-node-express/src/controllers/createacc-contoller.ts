@@ -1,5 +1,6 @@
 import UserService from "../services/create-account.js";
-import { NextFunction, Request, Response } from "express";
+import { Request, Response } from "express";
+import jwt from "jsonwebtoken";
 
 //import service to save data
 const userService = new UserService(); //instantiate class to use methods
@@ -7,14 +8,15 @@ const userService = new UserService(); //instantiate class to use methods
 //arrow function
 //handles response and request
 
-export const createAccount = async (
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) => {
+export const createAccount = async (req: Request, res: Response) => {
   try {
     const userData = req.body;
+    const { email, password, confirmpassword } = userData;
 
+    const generatedToken = jwt.sign({
+      email: email,
+      password: password,
+    });
     const user = await userService.createUser(userData); //throw new error resides here
     console.log("user created successfully");
 
