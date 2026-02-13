@@ -1,9 +1,7 @@
-import { error } from "node:console";
 import { AppDataSource } from "../config/config.js";
-import db from "../config/test-conf.js";
 import { User } from "../entities/user-entity.js";
 import { Repository } from "typeorm";
-import { UserInfo } from "../types/user-types.js";
+import { UserInfo, UserLogin } from "../types/user-types.js";
 
 //services is the main logic
 //performs querying, business logic and etc.
@@ -39,6 +37,22 @@ class UserService {
   catch(error: any) {
     //re catch here
     throw new Error(`Failed to create user: ${error.message}`);
+  }
+
+  async userLogin(data: UserLogin) {
+    const user = await this.userRepository
+      .createQueryBuilder("user") //param
+      //.from(User, "user") //skipped this if inside already the repo
+      .where("user.email = :email", { email: data.loginemail })
+      .getOne();
+
+    if (user === null) {
+      throw new Error("user doesnt exists");
+    }
+
+    if (data.loginpassword !== user?.password) {
+      throw new Error("xrong password");
+    }
   }
 }
 

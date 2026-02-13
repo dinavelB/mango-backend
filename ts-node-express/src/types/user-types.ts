@@ -3,3 +3,8 @@ export type UserInfo = {
   password: string;
   confirmpassword: string;
 };
+
+export type UserLogin = {
+  loginemail: string;
+  loginpassword: string;
+};
