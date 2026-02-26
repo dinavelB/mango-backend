@@ -1,6 +1,6 @@
 import "reflect-metadata";
 import { DataSource } from "typeorm";
-import { User } from "../entities/user-entity.js";
+import { User } from "../entities/user.entities.js";
 import { fileURLToPath } from "url";
 import path from "path";
 

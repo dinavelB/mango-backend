@@ -1,3 +1,5 @@
+// routes
+
 import { Router } from "express";
 import UserController from "../controllers/createacc-contoller.js";
 const router = Router();

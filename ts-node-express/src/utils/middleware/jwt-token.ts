@@ -12,7 +12,6 @@ class Auth {
 
   constructor() {
     this.secretKey = JWT_SECRET || "fallback_key";
-    this.algo = JWT_ALGORITHM || "HS256";
     this.expiration = JWT_EXPIRES_IN || "1d";
   }
 
@@ -42,18 +41,18 @@ class Auth {
   }
 
   // Decode token without verification
-  decodeToken(token) {
+  decodeToken(token: string) {
     return jwt.decode(token);
   }
 
   // Generate tokens with different types
-  generateAccessToken(payload) {
+  generateAccessToken(payload: string) {
     return this.generateToken(payload, {
       expiresIn: process.env.JWT_ACCESS_EXPIRES_IN || "15m",
     });
   }
 
-  generateRefreshToken(payload) {
+  generateRefreshToken(payload: string) {
     return this.generateToken(payload, {
       expiresIn: process.env.JWT_REFRESH_EXPIRES_IN || "7d",
     });
