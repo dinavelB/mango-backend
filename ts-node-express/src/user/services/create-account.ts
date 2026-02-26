@@ -2,7 +2,7 @@ import { AppDataSource } from "../../config/config.js";
 import { User } from "../../entities/user.entities.js";
 import { Repository } from "typeorm";
 import { UserInfo, UserLogin } from "../types/user-types.js";
-
+import { comparePass } from "../../utils/securities/password-hashing.js";
 //services is the main logic
 //performs querying, business logic and etc.
 //often async
@@ -41,8 +41,7 @@ class UserService {
 
   async userLogin(data: UserLogin) {
     const user = await this.userRepository
-      .createQueryBuilder("user") //param
-      //.from(User, "user") //skipped this if inside already the repo
+      .createQueryBuilder("user")
       .where("user.email = :email", { email: data.loginemail })
       .getOne();
 
@@ -50,9 +49,12 @@ class UserService {
       throw new Error("user doesnt exists");
     }
 
-    if (data.loginpassword !== user?.password) {
-      throw new Error("xrong password");
+    const result = await comparePass(data.loginpassword, user.password);
+    if (!result) {
+      throw new Error("passwords do not match");
     }
+
+    return user;
   }
 }
 
