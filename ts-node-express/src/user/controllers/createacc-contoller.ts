@@ -1,6 +1,6 @@
 import UserService from "../services/create-account.js";
 import { Request, Response } from "express";
-
+import { ErrorHandler } from "../../utils/dry/error.dry.js";
 const userService = new UserService();
 
 class UserController {
@@ -36,11 +36,14 @@ class UserController {
       res.status(201).json({
         message: "test",
       });
-    } catch (e) {
+    } catch (e: any) {
+      ErrorHandler(e);
       res.status(401).json({
-        message: "error from the userlogin",
+        response: {
+          message: "Invalid email or password, try again",
+          error: e.message,
+        },
       });
-      throw new Error();
     }
   }
 }

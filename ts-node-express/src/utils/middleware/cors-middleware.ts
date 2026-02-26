@@ -2,7 +2,7 @@ import cors from "cors"; //import cors libray when configuring cors
 
 const corsConfig = {
   origin: "http://localhost:5173", //point to port client
-  credentials: true,
+  credentials: true, // for cookies
   methods: ["GET", "POST", "DELETE", "UPDATE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization", "Accept"],
   exposedHeaders: ["set-cookie"],
