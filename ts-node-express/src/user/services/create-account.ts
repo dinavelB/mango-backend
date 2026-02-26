@@ -1,5 +1,5 @@
-import { AppDataSource } from "../config/config.js";
-import { User } from "../entities/user-entity.js";
+import { AppDataSource } from "../../config/config.js";
+import { User } from "../../entities/user.entities.js";
 import { Repository } from "typeorm";
 import { UserInfo, UserLogin } from "../types/user-types.js";
 

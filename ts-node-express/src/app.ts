@@ -2,7 +2,7 @@ import "reflect-metadata";
 import express from "express";
 import { AppDataSource } from "./config/config.js";
 import dotenv from "dotenv";
-import userroute from "./routes/userroute.js";
+import userroute from "./user/routes/userroute.js";
 import { corsConf } from "./utils/middleware/cors-middleware.js";
 
 dotenv.config();
