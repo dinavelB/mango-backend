@@ -40,21 +40,24 @@ class UserService {
   }
 
   async userLogin(data: UserLogin) {
+    console.log("Login attempt with data:", data); // 👈 Log what's coming in
+
     const user = await this.userRepository
       .createQueryBuilder("user")
-      .where("user.email = :email", { email: data.loginemail })
+      .where("user.email = :email", { email: data.email })
       .getOne();
 
+    console.log("Found user:", user); // 👈 Log what's found
+
     if (user === null) {
+      console.log("Email used in query:", data.email); // 👈 Log the email used
       throw new Error("user doesnt exists");
     }
 
-    const result = await comparePass(data.loginpassword, user.password);
+    const result = await comparePass(data.password, user.password);
     if (!result) {
       throw new Error("passwords do not match");
     }
-
-    return user;
   }
 }
 

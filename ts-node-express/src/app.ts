@@ -3,7 +3,7 @@ import express from "express";
 import { AppDataSource } from "./config/config.js";
 import dotenv from "dotenv";
 import userroute from "./user/routes/userroute.js";
-import { corsConf } from "./utils/middleware/cors-middleware.js";
+import { corsConf } from "./utils/security/cors-middleware.js";
 import { redis } from "./config/redis.config.js";
 import { RedisSchema } from "./redis-schema/user.redis-schema.js";
 

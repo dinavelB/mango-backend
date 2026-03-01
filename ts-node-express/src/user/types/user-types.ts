@@ -5,6 +5,6 @@ export type UserInfo = {
 };
 
 export type UserLogin = {
-  loginemail: string;
-  loginpassword: string;
+  email: string;
+  password: string;
 };
