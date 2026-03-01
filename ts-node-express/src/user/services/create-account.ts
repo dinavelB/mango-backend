@@ -1,5 +1,5 @@
 import { AppDataSource } from "../../config/config.js";
-import { User } from "../../entities/user.entities.js";
+import { User } from "../../schema/user.entities.js";
 import { Repository } from "typeorm";
 import { UserInfo, UserLogin } from "../types/user-types.js";
 import { comparePass } from "../../utils/securities/password-hashing.js";
