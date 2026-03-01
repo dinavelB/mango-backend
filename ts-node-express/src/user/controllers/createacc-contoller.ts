@@ -39,10 +39,8 @@ class UserController {
     } catch (e: any) {
       ErrorHandler(e);
       res.status(401).json({
-        response: {
-          message: "Invalid email or password, try again",
-          error: e.message,
-        },
+        message: "Invalid email or password, try again",
+        error: e.message,
       });
     }
   }
