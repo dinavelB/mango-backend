@@ -1,15 +1,25 @@
 import UserService from "../services/create-account.js";
 import { Request, Response } from "express";
 import { ErrorHandler } from "../../utils/dry/error.dry.js";
-const userService = new UserService();
+import { TokenService } from "../../utils/security/token.js";
+import { CookieParserService } from "../../utils/security/cookie-parser.security.js";
 
 class UserController {
+  private authtoken: TokenService;
+  private cookie: CookieParserService;
+  private userService: UserService;
+  constructor() {
+    this.authtoken = new TokenService();
+    this.cookie = new CookieParserService();
+    this.userService = new UserService();
+  }
+
   createAccount = async (req: Request, res: Response) => {
     try {
       const userData = req.body;
       const { email, password, confirmpassword } = userData;
 
-      const user = await userService.createUser(userData); //throw new error resides here
+      const user = await this.userService.createUser(userData); //throw new error resides here
       console.log("user created successfully");
 
       //data filtered by service isnt returning to frontend
@@ -27,14 +37,23 @@ class UserController {
     }
   };
 
-  async userLogin(req: Request, res: Response) {
+  userLogin = async (req: Request, res: Response) => {
     try {
-      const dataObj = req.body;
+      const { email, password } = req.body;
 
-      const data = await userService.userLogin(dataObj);
+      await this.userService.userLogin(req.body);
+
+      const token = this.authtoken.generateToken({
+        email: email,
+      });
+
+      this.cookie.setAuthCookies({ email: email }, token, res);
 
       res.status(201).json({
-        message: "test",
+        success: true,
+        data: {
+          message: "logged in successfully",
+        },
       });
     } catch (e: any) {
       ErrorHandler(e);
@@ -43,7 +62,7 @@ class UserController {
         error: e.message,
       });
     }
-  }
+  };
 }
 
 export default UserController;
