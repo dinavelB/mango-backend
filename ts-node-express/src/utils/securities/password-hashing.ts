@@ -14,5 +14,7 @@ export async function comparePass(
   plainPass: string,
   hashedPass: string,
 ): Promise<boolean> {
-  return await bcrypt.compare(plainPass, hashedPass);
+  const result = await bcrypt.compare(plainPass, hashedPass);
+
+  return result;
 }

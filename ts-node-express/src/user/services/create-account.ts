@@ -1,10 +1,8 @@
-import { error } from "node:console";
-import { AppDataSource } from "../config/config.js";
-import db from "../config/test-conf.js";
-import { User } from "../entities/user-entity.js";
+import { AppDataSource } from "../../config/config.js";
+import { User } from "../../schema/user.entities.js";
 import { Repository } from "typeorm";
-import { UserInfo } from "../types/user-types.js";
-
+import { UserInfo, UserLogin } from "../types/user-types.js";
+import { comparePass } from "../../utils/securities/password-hashing.js";
 //services is the main logic
 //performs querying, business logic and etc.
 //often async
@@ -39,6 +37,27 @@ class UserService {
   catch(error: any) {
     //re catch here
     throw new Error(`Failed to create user: ${error.message}`);
+  }
+
+  async userLogin(data: UserLogin) {
+    console.log("Login attempt with data:", data); // 👈 Log what's coming in
+
+    const user = await this.userRepository
+      .createQueryBuilder("user")
+      .where("user.email = :email", { email: data.email })
+      .getOne();
+
+    console.log("Found user:", user); // 👈 Log what's found
+
+    if (user === null) {
+      console.log("Email used in query:", data.email); // 👈 Log the email used
+      throw new Error("user doesnt exists");
+    }
+
+    const result = await comparePass(data.password, user.password);
+    if (!result) {
+      throw new Error("passwords do not match");
+    }
   }
 }
 
