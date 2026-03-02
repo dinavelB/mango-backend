@@ -7,22 +7,18 @@ import {
 import { redis } from "../config/redis.config.js";
 
 const client = redis.client;
-
+// json schema must match to the receiving json
 export async function RedisSchema() {
   const schema = await client.ft.create(
     "idx:users",
     {
-      "$.name": {
+      "$.email": {
         type: SCHEMA_FIELD_TYPE.TEXT,
-        AS: "name",
+        AS: "email",
       },
-      "$.city": {
+      "$.authorizationToken": {
         type: SCHEMA_FIELD_TYPE.TEXT,
-        AS: "city",
-      },
-      "$.age": {
-        type: SCHEMA_FIELD_TYPE.NUMERIC,
-        AS: "age",
+        AS: "authorizationToken",
       },
     },
     {

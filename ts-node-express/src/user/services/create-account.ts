@@ -2,55 +2,45 @@ import { AppDataSource } from "../../config/config.js";
 import { User } from "../../schema/user.entities.js";
 import { Repository } from "typeorm";
 import { UserInfo, UserLogin } from "../types/user-types.js";
-import { comparePass } from "../../utils/securities/password-hashing.js";
-//services is the main logic
-//performs querying, business logic and etc.
-//often async
+import {
+  comparePass,
+  hashPass,
+} from "../../utils/securities/password-hashing.js";
+import { redis } from "../../config/redis.config.js";
+import { TokenService } from "../../utils/security/token.js";
+import { RedisSetHandler } from "../../utils/dry/redis-set.dry.js";
 
 class UserService {
+  private authtoken: TokenService;
   private userRepository: Repository<User>; //user as a blueprint
+  private client = redis.client;
 
   constructor() {
     this.userRepository = AppDataSource.getRepository(User);
+    this.authtoken = new TokenService();
   }
 
-  async createUser(userData: UserInfo): Promise<Partial<User>> {
+  async createUser(userData: UserInfo) {
     if (userData.password != userData.confirmpassword) {
       throw new Error("passwords doesnt match");
     }
 
-    //save whats only needed.
     const user = this.userRepository.create({
       email: userData.email,
-      password: userData.password,
+      password: await hashPass(userData.password),
     });
 
-    const saved = await this.userRepository.save(user); //typeorm is async
+    const saved = await this.userRepository.save(user);
     console.log("user saved at databsse");
-
-    //filter an object
-    //dont return password
-    const { password, ...filteredData } = saved;
-
-    return filteredData;
-  }
-  catch(error: any) {
-    //re catch here
-    throw new Error(`Failed to create user: ${error.message}`);
   }
 
   async userLogin(data: UserLogin) {
-    console.log("Login attempt with data:", data); // 👈 Log what's coming in
-
     const user = await this.userRepository
       .createQueryBuilder("user")
       .where("user.email = :email", { email: data.email })
       .getOne();
 
-    console.log("Found user:", user); // 👈 Log what's found
-
     if (user === null) {
-      console.log("Email used in query:", data.email); // 👈 Log the email used
       throw new Error("user doesnt exists");
     }
 
@@ -58,6 +48,17 @@ class UserService {
     if (!result) {
       throw new Error("passwords do not match");
     }
+
+    const token = this.authtoken.generateToken({
+      email: data.email,
+    });
+
+    const redisUser = await RedisSetHandler({
+      email: user.email,
+      verificationToken: token,
+    });
+
+    return redisUser;
   }
 }
 
