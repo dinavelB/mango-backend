@@ -1,15 +1,12 @@
 import UserService from "../services/create-account.js";
 import { Request, Response } from "express";
 import { ErrorHandler } from "../../utils/dry/error.dry.js";
-import { TokenService } from "../../utils/security/token.js";
 import { CookieParserService } from "../../utils/security/cookie-parser.security.js";
 
 class UserController {
-  private authtoken: TokenService;
   private cookie: CookieParserService;
   private userService: UserService;
   constructor() {
-    this.authtoken = new TokenService();
     this.cookie = new CookieParserService();
     this.userService = new UserService();
   }
@@ -41,11 +38,7 @@ class UserController {
     try {
       const { email, password } = req.body;
 
-      await this.userService.userLogin(req.body);
-
-      const token = this.authtoken.generateToken({
-        email: email,
-      });
+      const { token } = await this.userService.userLogin(req.body);
 
       this.cookie.setAuthCookies({ email: email }, token, res);
 
