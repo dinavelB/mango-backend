@@ -27,15 +27,4 @@ export class User {
 
   @UpdateDateColumn()
   updatedAt: Date;
-
-  @BeforeInsert() //before inserting
-  async hashPass() {
-    if (this.password) {
-      this.password = await hashPass(this.password);
-    }
-  }
-
-  async compare(plainpass: string) {
-    return await comparePass(plainpass, this.password);
-  }
 }
