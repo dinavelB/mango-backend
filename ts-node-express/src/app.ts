@@ -24,7 +24,7 @@ Promise.all([AppDataSource.initialize(), redis.startRedis()])
     console.log("data source has been initialized");
     console.log("redis has been initialized");
 
-    RedisSchema();
+    // RedisSchema();
 
     app.listen(port, () => {
       console.log("server starting at: ", port);
