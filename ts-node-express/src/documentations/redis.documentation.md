@@ -50,3 +50,7 @@ docker exec -it mangoredis redis-cli
 ## redis index
 
 FT.\_LIST
+
+### Checks to remember
+
+## Any functions that uses an async, also needs to be await
