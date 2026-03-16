@@ -2,6 +2,7 @@ import UserService from "../services/create-account.js";
 import { Request, Response } from "express";
 import { ErrorHandler } from "../../utils/dry/error.dry.js";
 import { CookieParserService } from "../../utils/security/cookie-parser.security.js";
+import { Logout } from "../services/logout.service.js";
 
 class UserController {
   private cookie: CookieParserService;
@@ -55,6 +56,15 @@ class UserController {
         error: e.message,
       });
     }
+  };
+
+  Logout = async (req: Request, res: Response) => {
+    const email = req.query.email;
+
+    if (typeof email !== "string") {
+      throw new Error("Invalid email format");
+    }
+    return await Logout({ email }, res);
   };
 }
 

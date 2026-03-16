@@ -9,6 +9,7 @@ import {
 import { redis } from "../../config/redis.config.js";
 import { TokenService } from "../../utils/security/token.js";
 import { RedisSetHandler } from "../../utils/dry/redis-set.dry.js";
+import { Logout } from "./logout.service.js";
 
 class UserService {
   private authtoken: TokenService;

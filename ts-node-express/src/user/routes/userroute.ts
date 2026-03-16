@@ -7,5 +7,5 @@ const router = Router();
 const userClass = new UserController();
 router.post("/", userClass.createAccount);
 router.post("/login", userClass.userLogin);
-
+router.post("/logout", userClass.Logout);
 export default router;
