@@ -10,23 +10,25 @@ export async function Logout(user: UserLogout, res: Response) {
   userrepo = AppDataSource.getRepository(User);
 
   try {
-    await DelRedisKey(user);
-
     const email = await userrepo.findOne({
       where: { email: user.email },
     });
 
     if (!email) {
-      throw new Error("user does not exists");
+      throw new Error("user not found");
     }
-    
-  } catch (e: any) {
-    console.log("error message: ", e.message);
-    return;
-  }
 
-  return res.status(200).json({
-    success: true,
-    message: "token deleted",
-  });
+    await DelRedisKey(user);
+
+    return res.status(200).json({
+      success: true,
+      message: "token deleted",
+    });
+  } catch (e: any) {
+    return res.status(500).json({
+      success: false,
+      message: "Logout failed",
+      error: e.message,
+    });
+  }
 }
