@@ -5,3 +5,7 @@ export type RedisTokenType = RedisJSON & {
   email: string;
   verificationToken: string;
 };
+
+export type DelKey = RedisJSON & {
+  email: string;
+};
