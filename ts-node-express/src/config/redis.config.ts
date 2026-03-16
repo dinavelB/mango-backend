@@ -8,10 +8,10 @@ class RedisClientCnfig {
   constructor() {
     this.client = createClient({
       username: "default",
-      password: "secret",
+      password: "7J3xrfsFbEUPXDpwtzDme0Jkp49Ac216",
       socket: {
-        host: "localhost",
-        port: 6379,
+        host: "redis-13702.c258.us-east-1-4.ec2.cloud.redislabs.com.",
+        port: 13702,
       },
     });
   }

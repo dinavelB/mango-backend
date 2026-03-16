@@ -10,16 +10,24 @@ import * as dotenv from "dotenv";
 
 dotenv.config();
 
-const { DB_HOST, DB_PORT, DB_USERNAME, DB_PASSWORD, DB_DATABASE, NODE_ENV } =
-  process.env;
+const {
+  NEON_HOST,
+  NEON_PORT,
+  NEON_USERNAME,
+  NEON_PASSWORD,
+  NEON_DB,
+  NODE_ENV,
+} = process.env;
 
 export const AppDataSource = new DataSource({
   type: "postgres",
-  host: DB_HOST,
-  port: parseInt(DB_PORT || "5432"),
-  username: DB_USERNAME,
-  password: DB_PASSWORD,
-  database: DB_DATABASE,
+  host: NEON_HOST,
+  port: parseInt(NEON_PORT || "5432"),
+  username: NEON_USERNAME,
+  password: NEON_PASSWORD,
+  database: NEON_DB,
+  // FOR NEON
+  ssl: { rejectUnauthorized: false },
   synchronize: NODE_ENV === "dev" ? true : false,
   logging: NODE_ENV === "dev" ? false : false,
   entities: [User],
