@@ -18,7 +18,7 @@ class UserController {
       const user = await this.userService.createUser(userData);
 
       res.status(201).json({
-        message: "user successfully saved",
+        message: "Email verification sent",
       });
     } catch (err: any) {
       res.status(401).json({

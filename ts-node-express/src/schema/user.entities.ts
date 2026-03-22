@@ -19,7 +19,10 @@ export class User {
   user_password: string;
 
   @Column({ nullable: true })
-  user_otp: number;
+  user_otp: string;
+
+  @Column({ nullable: true })
+  veificationToken: string;
 
   @Column({ nullable: true })
   timezone: string;

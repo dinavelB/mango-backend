@@ -9,8 +9,7 @@ import {
 import { redis } from "../../config/redis.config.js";
 import { TokenService } from "../../utils/security/token.js";
 import { RedisSetHandler } from "../../utils/dry/redis-set.dry.js";
-import { Logout } from "./logout.service.js";
-
+import { email } from "../../email/email.service.js";
 class UserService {
   private authtoken: TokenService;
   private userRepository: Repository<User>; //user as a blueprint
@@ -31,9 +30,16 @@ class UserService {
       throw new Error("User already exists");
     }
 
+    await email.sendVerificationEmail(userData.email);
+
     const user = this.userRepository.create({
       user_email: userData.email,
       user_password: await hashPass(userData.password),
+      user_otp: email.otp,
+      veificationToken: this.authtoken.generateToken({
+        email: userData.email,
+        otp: email.otp,
+      }),
     });
 
     const saved = await this.userRepository.save(user);
