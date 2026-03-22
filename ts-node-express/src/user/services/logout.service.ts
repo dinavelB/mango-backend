@@ -11,7 +11,7 @@ export async function Logout(user: UserLogout, res: Response) {
 
   try {
     const email = await userrepo.findOne({
-      where: { email: user.email },
+      where: { user_email: user.email },
     });
 
     if (!email) {

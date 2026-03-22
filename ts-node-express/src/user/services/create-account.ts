@@ -22,30 +22,33 @@ class UserService {
   }
 
   async createUser(userData: UserInfo) {
-    if (userData.password != userData.confirmpassword) {
-      throw new Error("passwords doesnt match");
+    const duplicate = await this.userRepository.findOne({
+      where: {
+        user_email: userData.email,
+      },
+    });
+    if (duplicate) {
+      throw new Error("User already exists");
     }
 
     const user = this.userRepository.create({
-      email: userData.email,
-      password: await hashPass(userData.password),
+      user_email: userData.email,
+      user_password: await hashPass(userData.password),
     });
 
     const saved = await this.userRepository.save(user);
-    console.log("user saved at databsse");
   }
 
   async userLogin(data: UserLogin) {
-    const user = await this.userRepository
-      .createQueryBuilder("user")
-      .where("user.email = :email", { email: data.email })
-      .getOne();
+    const user = await this.userRepository.findOne({
+      where: { user_email: data.email },
+    });
 
-    if (user === null) {
+    if (!user) {
       throw new Error("user doesnt exists");
     }
 
-    const result = await comparePass(data.password, user.password);
+    const result = await comparePass(data.password, user.user_password);
     if (!result) {
       throw new Error("passwords do not match");
     }
@@ -55,7 +58,7 @@ class UserService {
     });
 
     const redisUser = await RedisSetHandler({
-      email: user.email,
+      email: user.user_email,
       verificationToken: token,
     });
 

@@ -6,7 +6,6 @@ import {
   UpdateDateColumn,
   BeforeInsert,
 } from "typeorm";
-import { hashPass, comparePass } from "../utils/securities/password-hashing.js";
 
 @Entity({ name: "Users" })
 export class User {
@@ -14,10 +13,16 @@ export class User {
   id: string;
 
   @Column({ nullable: false })
-  email: string;
+  user_email: string;
 
   @Column({ nullable: false })
-  password: string;
+  user_password: string;
+
+  @Column({ nullable: true })
+  user_otp: number;
+
+  @Column({ nullable: true })
+  timezone: string;
 
   @Column({ default: "user" })
   role: string;
