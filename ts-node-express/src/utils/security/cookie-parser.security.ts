@@ -1,5 +1,5 @@
 import { Response } from "express";
-import { CookieDataResponse } from "../../user/interface/res-cookie.interface.js";
+import { CookieDataResponse } from "../../user/interface/cookie-responses.js";
 
 export class CookieParserService {
   private cookieLife = 24 * 60 * 60 * 1000;
