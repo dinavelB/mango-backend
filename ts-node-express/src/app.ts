@@ -7,7 +7,7 @@ import { corsConf } from "./utils/security/cors-middleware.js";
 import { redis } from "./config/redis.config.js";
 import { RedisSchema } from "./redis-schema/user.redis-schema.js";
 import { IndexCheckerHandler } from "./utils/dry/redis-indexchecker.dry.js";
-
+import cookieParser from "cookie-parser";
 dotenv.config();
 
 const port = process.env.PORT || 4001;
@@ -16,7 +16,7 @@ const app = express();
 
 app.use(corsConf);
 app.use(express.json());
-
+app.use(cookieParser("binongofeb0206"));
 app.use("/api/users", userroute);
 
 // if its promise automatically you dont need awaits

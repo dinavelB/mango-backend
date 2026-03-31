@@ -15,7 +15,7 @@ class UserController {
   createAccount = async (req: Request, res: Response) => {
     try {
       const userData = req.body;
-      const user = await this.userService.createUser(userData);
+      const user = await this.userService.createUser(userData, res);
 
       res.status(201).json({
         message: "Email verification sent",

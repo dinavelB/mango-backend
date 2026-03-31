@@ -10,17 +10,21 @@ import { redis } from "../../config/redis.config.js";
 import { TokenService } from "../../utils/security/token.js";
 import { RedisSetHandler } from "../../utils/dry/redis-set.dry.js";
 import { email } from "../../email/email.service.js";
+import { CookieParserService } from "../../utils/security/cookie-parser.security.js";
+import { Response } from "express";
 class UserService {
   private authtoken: TokenService;
   private userRepository: Repository<User>; //user as a blueprint
   private client = redis.client;
+  private cookie: CookieParserService;
 
   constructor() {
     this.userRepository = AppDataSource.getRepository(User);
     this.authtoken = new TokenService();
+    this.cookie = new CookieParserService();
   }
 
-  async createUser(userData: UserInfo) {
+  async createUser(userData: UserInfo, res: Response) {
     const duplicate = await this.userRepository.findOne({
       where: {
         user_email: userData.email,
@@ -41,6 +45,17 @@ class UserService {
         otp: email.otp,
       }),
     });
+
+    const token = this.authtoken.generateToken({
+      email: user.user_email,
+      otp: user.user_otp,
+    });
+
+    this.cookie.setAuthCookies(
+      { email: user.user_email, otp: user.user_otp },
+      token,
+      res,
+    );
 
     const saved = await this.userRepository.save(user);
   }
