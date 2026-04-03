@@ -3,7 +3,7 @@ import { verifyOtp } from "../services/verifyotp.service.js";
 
 export const VerifyOtp = async (req: Request, res: Response) => {
   try {
-    const sessionToken = req.cookies?.["session_token"];
+    const sessionToken = req.cookies?.["auth_token"];
 
     const { otp } = req.body;
 

@@ -12,7 +12,7 @@ export class TokenService {
 
   generateToken(payload: PayloadToken) {
     return jwt.sign(payload, this.secretkey, {
-      expiresIn: "1d",
+      expiresIn: "10min",
     });
   }
 

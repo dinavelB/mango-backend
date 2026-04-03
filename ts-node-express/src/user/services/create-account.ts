@@ -37,23 +37,19 @@ class UserService {
     await email.sendVerificationEmail(userData.email);
 
     const user = this.userRepository.create({
+      firstname: userData.firstname,
+      lastname: userData.lastname,
       user_email: userData.email,
       user_password: await hashPass(userData.password),
-      user_otp: email.otp,
       veificationToken: this.authtoken.generateToken({
         email: userData.email,
         otp: email.otp,
       }),
     });
 
-    const token = this.authtoken.generateToken({
-      email: user.user_email,
-      otp: user.user_otp,
-    });
-
     this.cookie.setAuthCookies(
-      { email: user.user_email, otp: user.user_otp },
-      token,
+      { email: user.user_email, otp: email.otp },
+      user.veificationToken,
       res,
     );
 

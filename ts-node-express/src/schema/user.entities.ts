@@ -13,13 +13,16 @@ export class User {
   id: string;
 
   @Column({ nullable: false })
+  firstname: string;
+
+  @Column({ nullable: false })
+  lastname: string;
+
+  @Column({ nullable: false })
   user_email: string;
 
   @Column({ nullable: false })
   user_password: string;
-
-  @Column({ nullable: true })
-  user_otp: string;
 
   @Column({ nullable: true })
   veificationToken: string;

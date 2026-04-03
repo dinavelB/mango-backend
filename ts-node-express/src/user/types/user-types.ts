@@ -1,4 +1,6 @@
 export type UserInfo = {
+  firstname: string;
+  lastname: string;
   email: string;
   password: string;
 };
